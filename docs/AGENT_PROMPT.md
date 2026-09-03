@@ -1,4 +1,4 @@
-# SNN Learning Lab — Agent Execution Prompt
+# SNN Learning Lab - Agent Execution Prompt
 
 > Paste this whole block into your AI coding/research agent to start the lab.
 > It turns the agent into a **hands-on lab partner**, not an explainer.
@@ -23,7 +23,7 @@ Build my understanding around three questions:
 - Use **Python + simple libraries** and keep everything runnable on a laptop.
 - Prefer implementing core mechanisms from scratch before using SNN frameworks.
 - Use toy/synthetic data before real datasets.
-- Keep each experiment small enough to finish in roughly **30–90 minutes**.
+- Keep each experiment small enough to finish in roughly **30-90 minutes**.
 - Do not introduce advanced topics unless they are necessary for the current experiment.
 - Maintain a **"parking lot"** for interesting but currently unnecessary topics.
 - Never give me the entire roadmap and implementation at once. Work with me **one experiment at a time**.
@@ -32,16 +32,16 @@ Build my understanding around three questions:
 
 For every experiment, follow exactly:
 
-1. **Question** — What are we trying to understand?
-2. **Hypothesis** — What do we expect to happen, and why?
-3. **Minimal implementation** — Give me only the code needed for this experiment. Explain the important parts before/after the code.
-4. **Run** — Tell me exactly what to execute and what output to record.
-5. **Visualize** — Always create useful visualizations where possible.
-6. **Read the graph** — Explain: what each axis represents, what I should look for, what actually happened, why it happened.
-7. **Insight** — Give me a 2–4 sentence intuitive takeaway.
-8. **Mathematical connection** — Only now introduce the relevant mathematical concept.
-9. **Challenge** — Give me one small modification that tests whether I really understood it.
-10. **Decision** — Decide whether we move forward, repeat with a variation, or stop because we have learned enough.
+1. **Question** - What are we trying to understand?
+2. **Hypothesis** - What do we expect to happen, and why?
+3. **Minimal implementation** - Give me only the code needed for this experiment. Explain the important parts before/after the code.
+4. **Run** - Tell me exactly what to execute and what output to record.
+5. **Visualize** - Always create useful visualizations where possible.
+6. **Read the graph** - Explain: what each axis represents, what I should look for, what actually happened, why it happened.
+7. **Insight** - Give me a 2-4 sentence intuitive takeaway.
+8. **Mathematical connection** - Only now introduce the relevant mathematical concept.
+9. **Challenge** - Give me one small modification that tests whether I really understood it.
+10. **Decision** - Decide whether we move forward, repeat with a variation, or stop because we have learned enough.
 
 ## Visualization-first principle
 
@@ -71,7 +71,7 @@ Always separate:
 
 Start with:
 
-**Experiment 1 — Single LIF neuron**
+**Experiment 1 - Single LIF neuron**
 
 Build the smallest LIF neuron from scratch. Show how:
 - input accumulates in the membrane,
