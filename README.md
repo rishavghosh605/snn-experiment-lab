@@ -1,5 +1,9 @@
 # SNN Learning Lab
 
+Recently I came across some research on **spiking neural networks** and got genuinely curious about how to build on it. I had no background in them — nothing to lean on — so my first question was simply: *what's the best way to actually learn and use this?*
+
+The answer I kept coming back to was AI. Plenty of universities now run AI as a **lab partner** alongside their students and researchers — helping people learn by doing, not just by reading. That's what I wanted to build here: a place where I learn SNNs hands-on, with an AI partner driving the experiments one step at a time.
+
 Learn **Spiking Neural Networks** by building → running → visualizing → interpreting → iterating, one experiment at a time.
 
 ## Quick start
