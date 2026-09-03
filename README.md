@@ -11,7 +11,7 @@ Learn **Spiking Neural Networks** by building → running → visualizing → in
 ## Quick start
 
 Paste **[`AGENT_PROMPT.md`](docs/AGENT_PROMPT.md)** into your AI coding/research agent. That file carries the whole lab workflow (the 10-step experiment loop) so you can start immediately with **Experiment 1 - a single LIF neuron** and let the agent drive the rest.
-New to using an AI agent as a learning partner? See **[`Using AI as a Research Lab Partner`](docs/ai-lab-partner.md)** - how to start fast and actually learn, not just get answers.
+**Want to know more?** See the [`AI-lab-partner guide`](docs/ai-lab-partner.md) for extra reading - the idea behind learning with AI, and some universities that use it this way.
 
 ## What we're after
 
