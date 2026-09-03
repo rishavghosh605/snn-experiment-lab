@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Experiment 1 - Single LIF Neuron</title>
+<style>
+  :root { color-scheme: light; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background: #f5f6f8; color: #1a1a1a; line-height: 1.5; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  h1 { font-size: 1.7rem; margin: 0 0 4px; }
+  h2 { font-size: 1.2rem; margin: 34px 0 10px; }
+  h3 { font-size: 1rem; margin: 18px 0 6px; }
+  .sub { color: #5a6270; margin-top: 0; }
+  .card { background: #fff; border: 1px solid #e3e6ea; border-radius: 10px; padding: 18px 20px; margin: 14px 0; }
+  .chip { display: inline-block; background: #eef1f5; border-radius: 20px; padding: 3px 10px; font-size: .8rem; color: #34404f; }
+  label { display: block; margin: 8px 0; font-size: .95rem; }
+  label input, label select { margin-right: 8px; }
+  button { margin-top: 8px; padding: 8px 16px; border: 1px solid #c9ced6; border-radius: 6px; background: #fafbfc; cursor: pointer; font-size: .92rem; }
+  button:hover { background: #eff2f6; }
+  .hint { font-size: .82rem; color: #6b7482; margin: 4px 0 0; }
+  .pair { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; }
+  svg { width: 100%; height: auto; display: block; border-radius: 8px; }
+  .note { font-size: .85rem; color: #3d4654; background: #fff8e8; border-left: 3px solid #e9b949; padding: 10px 12px; border-radius: 6px; }
+  .muted { color: #6b7482; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Experiment 1 - Single LIF Neuron</h1>
+  <p class="sub">A quick intro, a 3-question quiz, then a couple of decisions so we build it the way you like.</p>
+
+  <div class="note">
+    This page is interactive: pick your answers and hit <strong>Queue</strong> on each section. Your choices come back to me so we can set up the experiment together.
+  </div>
+
+  <h2>1. The idea, in one breath</h2>
+  <div class="card">
+    A normal network passes numbers around. A <strong>spiking</strong> network passes <strong>events</strong> (spikes) that happen at moments in time. Each neuron has a little internal "voltage." Input nudges it up; when it passes a threshold, the neuron fires a spike and resets. The <em>timing</em> of the spikes carries the information.
+  </div>
+
+  <h2>2. The LIF neuron, in one picture</h2>
+  <div class="card">
+    <p class="muted">LIF = Leaky Integrate-and-Fire. "Leaky" because the voltage keeps draining a little, like water in a leaky bucket.</p>
+    <svg viewBox="0 0 640 220" role="img" aria-label="Membrane potential rising, hitting threshold, spiking and resetting">
+      <rect x="0" y="0" width="640" height="220" rx="8" fill="#fafbfc"/>
+      <line x1="40" y1="40" x2="40" y2="180" stroke="#c9ced6" stroke-width="1"/>
+      <line x1="40" y1="180" x2="620" y2="180" stroke="#c9ced6" stroke-width="1"/>
+      <!-- threshold dashed line -->
+      <line x1="40" y1="70" x2="620" y2="70" stroke="#d9534f" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="48" y="62" font-size="12" fill="#d9534f">threshold</text>
+      <!-- membrane voltage curve -->
+      <polyline points="40,178 90,178 100,170 120,158 140,148 160,138 170,130 180,122 190,114 200,106 205,100 210,94 214,88 218,82 220,70 232,118 240,120 250,120 260,116 270,108 280,100 290,92 300,84 310,76 318,70 330,118 338,120 348,120 358,116 368,108 378,100 388,92 398,84 408,76 414,70 424,118" fill="none" stroke="#3d6df2" stroke-width="2.5"/>
+      <text x="52" y="188" font-size="12" fill="#6b7482">time</text>
+      <text x="18" y="94" font-size="12" fill="#6b7482" transform="rotate(-90 18 94)">voltage</text>
+      <!-- spike markers -->
+      <text x="226" y="200" font-size="12" fill="#3d6df2">fire</text>
+      <!-- reset -->
+      <text x="300" y="200" font-size="12" fill="#6b7482">leak</text>
+    </svg>
+    <ul>
+      <li><strong>Integrate:</strong> input raises the voltage (the rising curve).</li>
+      <li><strong>Fire:</strong> when it touches the threshold line, it emits a spike.</li>
+      <li><strong>Reset:</strong> right after, the voltage drops to a low value.</li>
+      <li><strong>Leak:</strong> between inputs, the voltage gently drains back down.</li>
+    </ul>
+  </div>
+
+  <h2>3. Quick quiz</h2>
+  <div class="card">
+    <form data-lavish-question="quiz" onsubmit="event.preventDefault(); const f=new FormData(event.currentTarget); window.lavish.queuePrompt('Quiz answers - Q1: '+(f.get('q1')||'n/a')+' | Q2: '+(f.get('q2')||'n/a')+' | Q3: '+(f.get('q3')||'n/a'), { tag:'quiz', text:'My quiz answers', element:event.currentTarget, data:{ question:'quiz' } });">
+      <p><strong>Q1.</strong> After a neuron fires, what happens to its voltage?</p>
+      <label><input type="radio" name="q1" value="stays high"> It stays high and keeps firing</label>
+      <label><input type="radio" name="q1" value="resets low"> It drops to a low value and starts again</label>
+
+      <p><strong>Q2.</strong> What carries the information in an SNN?</p>
+      <label><input type="radio" name="q2" value="magnitude"> The size/number of each spike</label>
+      <label><input type="radio" name="q2" value="timing"> The timing of when spikes happen</label>
+
+      <p><strong>Q3.</strong> If I inject a bigger steady current, should it fire?</p>
+      <label><input type="radio" name="q3" value="more often"> More often</label>
+      <label><input type="radio" name="q3" value="less often"> Less often</label>
+      <button type="submit">Queue my quiz answers</button>
+    </form>
+  </div>
+
+  <h2>4. Decide: how should we run the experiment?</h2>
+  <div class="card">
+    <p class="muted">Pick what feels right. I'll build exactly this as the first version, and we tune from there.</p>
+    <form data-lavish-question="setup" onsubmit="event.preventDefault(); const f=new FormData(event.currentTarget); window.lavish.queuePrompt('Experiment setup - current: '+(f.get('current')||'n/a')+' | steps: '+(f.get('steps')||'n/a')+' | threshold: '+(f.get('threshold')||'n/a')+' | reset: '+(f.get('reset')||'n/a'), { tag:'setup', text:'Experiment setup', element:event.currentTarget, data:{ question:'setup' } });">
+      <p><strong>Injected current (steady):</strong></p>
+      <label><input type="radio" name="current" value="low"> Low - fires rarely</label>
+      <label><input type="radio" name="current" value="medium"> Medium - a steady rhythm</label>
+      <label><input type="radio" name="current" value="high"> High - fires a lot</label>
+
+      <p><strong>How long to simulate?</strong></p>
+      <label><input type="radio" name="steps" value="1000"> Short (~1000 time steps)</label>
+      <label><input type="radio" name="steps" value="2000"> Longer (~2000 time steps)</label>
+
+      <p><strong>Spike threshold:</strong></p>
+      <label><input type="radio" name="threshold" value="1"> Default</label>
+      <label><input type="radio" name="threshold" value="higher"> Higher threshold</label>
+
+      <p><strong>After firing, reset the voltage to:</strong></p>
+      <label><input type="radio" name="reset" value="zero"> Zero</label>
+      <label><input type="radio" name="reset" value="subtract"> Subtract the threshold (keeps a little carry-over)</label>
+      <button type="submit">Queue experiment setup</button>
+    </form>
+  </div>
+
+  <h2>5. Decide: what should the plot look like?</h2>
+  <div class="card">
+    <p class="muted">Here is the example I have in mind - two stacked panels sharing one time axis:</p>
+    <svg viewBox="0 0 640 220" role="img" aria-label="Example plot: membrane potential on top, spike rasters below">
+      <rect x="0" y="0" width="640" height="220" rx="8" fill="#fafbfc"/>
+      <line x1="40" y1="30" x2="40" y2="180" stroke="#c9ced6"/>
+      <line x1="40" y1="180" x2="620" y2="180" stroke="#c9ced6"/>
+      <line x1="40" y1="55" x2="620" y2="55" stroke="#d9534f" stroke-dasharray="6 4"/>
+      <text x="48" y="48" font-size="12" fill="#d9534f">threshold</text>
+      <polyline points="60,175 90,170 120,160 150,150 180,140 210,130 240,120 260,110 280,100 300,55 330,160 360,150 390,140 420,130 450,120 470,110 490,100 500,55" fill="none" stroke="#3d6df2" stroke-width="2"/>
+      <text x="52" y="190" font-size="11" fill="#6b7482">top panel: membrane potential</text>
+      <!-- raster panel -->
+      <line x1="40" y1="205" x2="620" y2="205" stroke="#c9ced6"/>
+      <circle cx="300" cy="205" r="3" fill="#3d6df2"/>
+      <circle cx="500" cy="205" r="3" fill="#3d6df2"/>
+      <text x="52" y="216" font-size="11" fill="#6b7482">bottom panel: spike ticks</text>
+      <text x="12" y="94" font-size="12" fill="#6b7482" transform="rotate(-90 12 94)">voltage</text>
+    </svg>
+    <p class="muted">A spike tick appears exactly where the top curve touches the threshold.</p>
+    <form data-lavish-question="viz" onsubmit="event.preventDefault(); const f=new FormData(event.currentTarget); window.lavish.queuePrompt('Visualization - layout: '+(f.get('layout')||'n/a')+' | show threshold: '+(f.get('thresholdline')||'n/a')+' | show ticks: '+(f.get('ticks')||'n/a'), { tag:'viz', text:'Visualization choices', element:event.currentTarget, data:{ question:'viz' } });">
+      <p><strong>Layout:</strong></p>
+      <label><input type="radio" name="layout" value="stacked"> Stacked panels (like the example)</label>
+      <label><input type="radio" name="layout" value="single"> One panel, both curves overlaid</label>
+
+      <p><strong>Show the threshold as a dashed line?</strong></p>
+      <label><input type="radio" name="thresholdline" value="yes"> Yes</label>
+      <label><input type="radio" name="thresholdline" value="no"> No</label>
+
+      <p><strong>Show spike ticks on a separate row?</strong></p>
+      <label><input type="radio" name="ticks" value="yes"> Yes</label>
+      <label><input type="radio" name="ticks" value="no"> No</label>
+      <button type="submit">Queue visualization choices</button>
+    </form>
+  </div>
+
+</div>
+</body>
+</html>
