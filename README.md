@@ -4,7 +4,8 @@ Learn **Spiking Neural Networks** by building → running → visualizing → in
 
 ## Quick start
 
-Paste **[`AGENT_PROMPT.md`](AGENT_PROMPT.md)** into your AI coding/research agent. That file carries the whole lab workflow (the 10-step experiment loop) so you can start immediately with **Experiment 1 — a single LIF neuron** and let the agent drive the rest.
+Paste **[`AGENT_PROMPT.md`](docs/AGENT_PROMPT.md)** into your AI coding/research agent. That file carries the whole lab workflow (the 10-step experiment loop) so you can start immediately with **Experiment 1 — a single LIF neuron** and let the agent drive the rest.
+New to using an AI agent as a learning partner? See **[`Using AI as a Research Lab Partner`](docs/ai-lab-partner.md)** — how to start fast and actually learn, not just get answers.
 
 ## What we're after
 
@@ -22,7 +23,8 @@ Every experiment follows a fixed loop: **Question → Hypothesis → Build → R
 
 | Path | What it is |
 |:---|:---|
-| `AGENT_PROMPT.md` | The paste-into-agent execution prompt |
+| `docs/AGENT_PROMPT.md` | The paste-into-agent execution prompt |
+| `docs/ai-lab-partner.md` | How to use an AI as a learning/research partner |
 | `state-of-the-field/` | Reference — the 10 landmark papers and where the field is headed |
 | `requirements.txt` | Minimal Python deps (numpy, matplotlib) |
 
