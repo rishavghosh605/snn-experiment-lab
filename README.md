@@ -2,7 +2,9 @@
 
 Recently I came across some research on **spiking neural networks** and got genuinely curious about how to build on it. I had no background in them — nothing to lean on — so my first question was simply: *what's the best way to actually learn and use this?*
 
-The answer I kept coming back to was AI. Plenty of universities now run AI as a **lab partner** alongside their students and researchers — helping people learn by doing, not just by reading. That's what I wanted to build here: a place where I learn SNNs hands-on, with an AI partner driving the experiments one step at a time.
+The answer I kept coming back to was AI. Plenty of universities now run AI as a **lab partner** alongside their students and researchers — helping people learn by doing, not just by reading. That's what I wanted to build here. I'm naturally curious, open to trying new things, and this felt like the most honest way to actually pick the field up.
+
+To be clear, the AI isn't doing the work for me. I frame each question, predict what should happen, and explain the graphs we get. The AI helps me set up and run the experiments and catches where my reasoning is off — which is how it should be used, as a partner that sharpens my own understanding rather than replacing it.
 
 Learn **Spiking Neural Networks** by building → running → visualizing → interpreting → iterating, one experiment at a time.
 

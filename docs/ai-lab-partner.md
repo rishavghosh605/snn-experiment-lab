@@ -4,7 +4,7 @@
 
 ## Why this matters now
 
-AI has moved past the "ask a chatbot" stage. Across higher education — including in **Germany** (IU International University (Duisburg)'s **Syntea** learning companion, TU Munich's **OneTutor** Socratic tutor serving tens of thousands of students) — the shift is toward using AI as an **active learning and research partner**: something that runs experiments, iterates, and walks you through results, rather than a search engine that hands back a paragraph.
+AI has moved past the "ask a chatbot" stage. Across higher education — including in **Germany** (IU International University 's **Syntea** learning companion, TU Munich's **OneTutor** Socratic tutor serving tens of thousands of students) — the shift is toward using AI as an **active learning and research partner**: something that runs experiments, iterates, and walks you through results, rather than a search engine that hands back a paragraph.
 
 The confusion most people feel isn't "is AI good?" — it's **"how do I actually use it to get good at something?"** This guide answers that.
 
