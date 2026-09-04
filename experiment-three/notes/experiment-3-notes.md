@@ -78,3 +78,12 @@ flowchart TD
 ## Takeaway
 
 The surrogate gradient's shape decides whether a spiking net learns at all: arctan matches the ANN, STE cannot. And on a dense binary task the spiking net uses *more* energy, not less - the energy advantage only appears for sparse, event-driven input.
+
+## Implementation notes (what didn't work first)
+
+- **The ANN reference would not converge.** With lr = 0.05 it predicted ~0.5 on everything and only got 0.75 by luck. Root cause: too-small a step for the saturating tanh/sigmoid, so it never escaped a flat region. Fix: give the ANN its own lr = 0.5 -> hit 1.00 at epoch 895. Lesson: the reference and the SNN need separately tuned step sizes; never assume one lr fits both.
+- **`np.outer` orientation.** `np.outer(a, b)` has shape (len_a, len_b). I repeatedly wrote it backwards against the weight shape (e.g. `np.outer(h, go)` for a (1,4) weight -> wrong, gives (4,1)). Fix: match the outer order to the target weight shape. Lesson: check the outer order before trusting a gradient.
+- **A dead variable computed for no reason** (`dvo` in the output BPTT). Not used once I dropped the membrane-carried path. ruff flagged it; removed. Lesson: run the linter; it catches dead code I would leave.
+- **Shape of the spike-rate return.** `mean(sos)/T` came back as a (1,) array, so the loss became an ndarray and later `float()` calls broke. Fix: return the rate as a scalar. Lesson: box the shape at the source.
+- **Operator precedence in `acc`.** `float((pred>0.5)==truth).mean()` applied `float()` to the whole array before `.mean()`. Fix: float the final mean, not the array.
+- **Why STE cannot learn.** Its derivative is a constant 1, giving no shape to separate correct from incorrect, so the net stays at 0.5 forever.
