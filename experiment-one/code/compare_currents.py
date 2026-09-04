@@ -5,8 +5,8 @@ Three columns (I = 0.04, 0.08, 0.16):
   bottom row - spike ticks
 """
 
-import numpy as np
 import matplotlib
+import numpy as np
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt

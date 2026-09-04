@@ -9,8 +9,8 @@ Visualization: two stacked panels sharing one time axis.
   bottom - a tick at every moment the neuron fired
 """
 
-import numpy as np
 import matplotlib
+import numpy as np
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
