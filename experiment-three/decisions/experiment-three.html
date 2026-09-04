@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Experiment 3 - Spiking vs standard network on XOR</title>
+<style>
+  :root { color-scheme: light; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; background: #f5f6f8; color: #1a1a1a; line-height: 1.5; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 32px 20px 80px; }
+  h1 { font-size: 1.7rem; margin: 0 0 4px; }
+  h2 { font-size: 1.2rem; margin: 34px 0 10px; }
+  .sub { color: #5a6270; margin-top: 0; }
+  .card { background: #fff; border: 1px solid #e3e6ea; border-radius: 10px; padding: 18px 20px; margin: 14px 0; }
+  label { display: block; margin: 8px 0; font-size: .95rem; }
+  label input { margin-right: 8px; }
+  button { margin-top: 8px; padding: 8px 16px; border: 1px solid #c9ced6; border-radius: 6px; background: #fafbfc; cursor: pointer; font-size: .92rem; }
+  button:hover { background: #eff2f6; }
+  .muted { color: #6b7482; }
+  .note { font-size: .85rem; color: #3d4654; background: #fff8e8; border-left: 3px solid #e9b949; padding: 10px 12px; border-radius: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Experiment 3 - Spiking vs standard network on XOR</h1>
+  <p class="sub">What we'll do, a quick quiz, then the setup and metrics choices.</p>
+
+  <div class="note">Interactive: pick your answers and hit <strong>Queue</strong> on each section.</div>
+
+  <h2>1. The idea</h2>
+  <div class="card">
+    <p>We train two networks on the same simple task, <strong>XOR</strong> (output 1 if the two inputs differ), then compare them against the <strong>correct answer</strong>.</p>
+    <ul>
+      <li><strong>Plain ANN</strong> - a small standard network, trained with normal backprop. Our reference.</li>
+      <li><strong>Spiking net</strong> - the same task, but with LIF neurons and <strong>surrogate gradient</strong> training. We try 4 different surrogate functions.</li>
+    </ul>
+    <p class="muted">XOR is the classic "needs a hidden layer" task, so if the spiking net learns it, the whole training pipeline works.</p>
+  </div>
+
+  <h2>2. Quick quiz</h2>
+  <div class="card">
+    <form data-lavish-question="quiz" onsubmit="event.preventDefault(); const f=new FormData(event.currentTarget); window.lavish.queuePrompt('Quiz answers - Q1: '+(f.get('q1')||'n/a')+' | Q2: '+(f.get('q2')||'n/a')+' | Q3: '+(f.get('q3')||'n/a'), { tag:'quiz', text:'My quiz answers', element:event.currentTarget, data:{ question:'quiz' } });">
+      <p><strong>Q1.</strong> Why can't a single unit (no hidden layer) learn XOR?</p>
+      <label><input type="radio" name="q1" value="not linearly separable"> The outputs are not separable by a straight line</label>
+      <label><input type="radio" name="q1" value="not enough inputs"> It has too few input values</label>
+
+      <p><strong>Q2.</strong> A surrogate gradient helps training because it...</p>
+      <label><input type="radio" name="q2" value="smooth derivative"> substitutes a smooth derivative for the spike's undefined one</label>
+      <label><input type="radio" name="q2" value="speeds neuron"> makes the neuron fire faster</label>
+
+      <p><strong>Q3.</strong> Spiking energy is usually counted by...</p>
+      <label><input type="radio" name="q3" value="synaptic ops"> the number of spike-driven synaptic operations</label>
+      <label><input type="radio" name="q3" value="macs"> a fixed multiply-accumulate count</label>
+      <button type="submit">Queue my quiz answers</button>
+    </form>
+  </div>
+
+  <h2>3. Decide: setup</h2>
+  <div class="card">
+    <p class="muted">The surrogate functions to compare, the network size, and how long the spiking net runs per input.</p>
+    <form data-lavish-question="setup" onsubmit="event.preventDefault(); const f=new FormData(event.currentTarget); const s=f.getAll('surg'); window.lavish.queuePrompt('Setup - surrogates: '+(s.join(', ')||'none')+' | hidden: '+(f.get('hidden')||'n/a')+' | timesteps: '+(f.get('ts')||'n/a'), { tag:'setup', text:'Experiment setup', element:event.currentTarget, data:{ question:'setup' } });">
+      <p><strong>Which surrogate gradient functions to compare? (pick as many)</strong></p>
+      <label><input type="checkbox" name="surg" value="ste"> Straight-through (STE)</label>
+      <label><input type="checkbox" name="surg" value="triangle"> Triangle</label>
+      <label><input type="checkbox" name="surg" value="fast-sigmoid"> Fast-sigmoid (in use)</label>
+      <label><input type="checkbox" name="surg" value="arctan"> Arctan (in use)</label>
+
+      <p><strong>Hidden layer size:</strong></p>
+      <label><input type="radio" name="hidden" value="4"> 4 neurons</label>
+      <label><input type="radio" name="hidden" value="8"> 8 neurons</label>
+
+      <p><strong>Timesteps per input (spiking latency):</strong></p>
+      <label><input type="radio" name="ts" value="8"> 8</label>
+      <label><input type="radio" name="ts" value="16"> 16</label>
+      <button type="submit">Queue experiment setup</button>
+    </form>
+  </div>
+
+  <h2>4. Decide: what to show</h2>
+  <div class="card">
+    <p class="muted">We compare truth, the ANN, and the spiking net. Pick what to display.</p>
+    <form data-lavish-question="viz" onsubmit="event.preventDefault(); const f=new FormData(event.currentTarget); const v=f.getAll('plot'); window.lavish.queuePrompt('Visualization - plots: '+(v.join(', ')||'none')+' | layout: '+(f.get('layout')||'n/a'), { tag:'viz', text:'Visualization choices', element:event.currentTarget, data:{ question:'viz' } });">
+      <p><strong>Which plots? (pick as many)</strong></p>
+      <label><input type="checkbox" name="plot" value="boundaries"> 2D decision boundaries: truth, ANN, SNN</label>
+      <label><input type="checkbox" name="plot" value="loss"> Training loss curves per surrogate</label>
+      <label><input type="checkbox" name="plot" value="metrics"> Metric table (accuracy, energy, speed)</label>
+
+      <p><strong>Layout of the boundary plot:</strong></p>
+      <label><input type="radio" name="layout" value="side-by-side"> Side by side (truth / ANN / SNN)</label>
+      <label><input type="radio" name="layout" value="grid"> A grid with each surrogate</label>
+      <button type="submit">Queue visualization choices</button>
+    </form>
+  </div>
+
+</div>
+</body>
+</html>
