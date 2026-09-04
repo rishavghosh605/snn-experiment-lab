@@ -54,8 +54,8 @@ def main():
         ax_s.set_ylabel(f"spikes ({len(spikes)})")
         ax_s.set_xlabel("time step")
 
-    fig.suptitle("Single LIF neuron: effect of current strength (three cases)", y=1.02)
-    fig.tight_layout()
+    fig.suptitle("Single LIF neuron: effect of current strength (three cases)", y=0.98)
+    fig.tight_layout(rect=(0, 0, 1, 0.92))
     out = "experiment-one/figures/compare_currents.svg"
     fig.savefig(out, format="svg")
     plt.close(fig)
