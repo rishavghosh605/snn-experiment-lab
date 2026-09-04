@@ -1,2 +1,3 @@
 # OMP harness / project-local skills dirs (machine-specific, not repo content)
 /.omp/
+/memory.md
