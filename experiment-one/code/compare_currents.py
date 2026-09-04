@@ -1,9 +1,8 @@
-"""Compare two LIF neurons: I=0.08 vs I=0.16 (same tau and threshold).
+"""Compare three LIF neurons under different currents (same tau and threshold).
 
-Four panels in a 2x2 grid:
-  left column - I = 0.08 (V_inf = 1.6), right column - I = 0.16 (V_inf = 3.2)
-  top row     - membrane voltage with threshold line
-  bottom row  - spike ticks
+Three columns (I = 0.04, 0.08, 0.16):
+  top row    - membrane voltage with threshold line
+  bottom row - spike ticks
 """
 
 import numpy as np
@@ -33,10 +32,10 @@ def run_lif(I):
 
 
 def main():
-    currents = [0.08, 0.16]
+    currents = [0.04, 0.08, 0.16]
     results = {I: run_lif(I) for I in currents}
 
-    fig, axes = plt.subplots(2, 2, sharex="col", figsize=(10, 5),
+    fig, axes = plt.subplots(2, 3, sharex="col", figsize=(12, 5),
                              gridspec_kw={"height_ratios": [3, 1]})
     for col, I in enumerate(currents):
         voltage, spikes = results[I]
@@ -53,18 +52,17 @@ def main():
         ax_s.eventplot(spikes, colors="#3d6df2")
         ax_s.set_yticks([])
         ax_s.set_ylabel(f"spikes ({len(spikes)})")
-        if col == 0:
-            ax_s.set_xlabel(""), ax_v.set_xlabel("")
         ax_s.set_xlabel("time step")
 
-    fig.suptitle("Single LIF neuron: effect of doubling the current", y=1.02)
+    fig.suptitle("Single LIF neuron: effect of current strength (three cases)", y=1.02)
     fig.tight_layout()
-    out = "experiment-one/compare_currents.svg"
+    out = "experiment-one/figures/compare_currents.svg"
     fig.savefig(out, format="svg")
     plt.close(fig)
     print("saved", out)
     for I in currents:
-        print(f"I={I}: spikes={len(results[I][1])}, mean ISI={np.diff(results[I][1]).mean():.2f}")
+        s = results[I][1]
+        print(f"I={I}: spikes={len(s)}, mean ISI={np.diff(s).mean() if len(s) > 1 else float('nan'):.2f}")
 
 
 if __name__ == "__main__":
