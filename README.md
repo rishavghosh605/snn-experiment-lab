@@ -35,6 +35,14 @@ Every experiment follows a fixed loop: **Question → Hypothesis → Build → R
 | `requirements.txt` | Minimal Python deps (numpy, matplotlib) |
 
 Experiments get added as scripts (numbered by experiment) as we go - no pre-built roadmap.
+Each experiment lives in its own folder (e.g. `experiment-one/`) and keeps its work in four folders:
+
+| Folder | What it holds |
+|:--|:--|
+| `decisions/` | the interactive decision page (html + png) and the decisions sheet |
+| `notes/` | the lesson card for that experiment |
+| `figures/` | the plots (SVG) |
+| `code/` | the runnable experiment code |
 
 ## First step
 
