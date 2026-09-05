@@ -252,14 +252,12 @@ def main():
               ha="center", fontsize=9, color="#3d4654")
     fig2.savefig("experiment-four/figures/experiment_4_boundaries.svg", format="svg")
     plt.close(fig2)
-    fig2.savefig("experiment-four/figures/experiment_4_boundaries.svg", format="svg")
-    plt.close(fig2)
 
     # (c) metrics table
     rows = [("ANN", ann_a, ann_mac, ann_conv, 1)]
     for kind in KINDS:
         rows.append((kind, snn[kind][2], snn[kind][3], snn[kind][4], T))
-    fig3, ax3 = plt.subplots(figsize=(6.5, 2.2))
+    fig3, ax3 = plt.subplots(figsize=(8.0, 3.4))
     ax3.axis("off")
     tbl = ax3.table(cellText=[[f"{n}", f"{a:.2f}", f"{e}", f"{c}", f"{l}"]
                               for n, a, e, c, l in rows],
@@ -267,12 +265,12 @@ def main():
                     loc="center", cellLoc="center")
     tbl.auto_set_font_size(False)
     tbl.set_fontsize(10)
-    tbl.scale(1, 1.6)
-    fig3.text(0.5, 0.005, "The ANN wins on accuracy and speed; the spiking net uses ~3x "
-                          "the energy and still never converges (epochs = full budget).",
+    tbl.scale(1, 1.8)
+    fig3.subplots_adjust(left=0.04, right=0.96, top=0.80, bottom=0.16)
+    fig3.suptitle("Metrics - ANN vs spiking net (two-spiral)", fontsize=11)
+    fig3.text(0.5, 0.015, "The ANN wins on accuracy and speed; the spiking net uses ~3x the energy "
+                          "and still never converges (epochs = full budget).",
               ha="center", fontsize=9, color="#3d4654")
-    fig3.savefig("experiment-four/figures/experiment_4_metrics.svg", format="svg")
-    plt.close(fig3)
     fig3.savefig("experiment-four/figures/experiment_4_metrics.svg", format="svg")
     plt.close(fig3)
 
