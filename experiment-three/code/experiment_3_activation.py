@@ -1,4 +1,4 @@
-"""Train a plain ANN and a LIF spiking net (surrogate gradients) on XOR.
+"""Train a plain ANN and a LIF spiking net (smooth activations) on XOR.
 
 Compare accuracy, energy (synaptic ops vs MACs), and speed.
 """
@@ -15,7 +15,7 @@ Y = np.array([[0.0], [1.0], [1.0], [0.0]])
 T, TAU, THRESH, E, LR, LR_ANN = 8, 2.0, 1.0, 1500, 0.05, 0.5
 
 
-def surr(x, kind):
+def act_deriv(x, kind):
     if kind == "ste":
         return np.ones_like(x)
     if kind == "triangle":
@@ -54,13 +54,13 @@ def bptt(w1, b1, w2, b2, x, y, kind):
     db1 = np.zeros_like(b1)
     dsh_acc = [np.zeros(4) for _ in range(T)]
     for t in range(T - 1, -1, -1):
-        dso = d / T * surr(vos[t] - THRESH, kind)
+        dso = d / T * act_deriv(vos[t] - THRESH, kind)
         dw2 += np.outer(dso, shs[t]).reshape(1, 4)
         db2 += dso
         dsh_acc[t][:] += w2[0, :] * dso[0]
     dvh = np.zeros(4)
     for t in range(T - 1, -1, -1):
-        mem = (dsh_acc[t] + dvh) * surr(vhs[t] - THRESH, kind)
+        mem = (dsh_acc[t] + dvh) * act_deriv(vhs[t] - THRESH, kind)
         dw1 += np.outer(mem, s_in).reshape(4, 2)
         db1 += mem
         dvh = mem * (1 - 1 / TAU)
@@ -165,7 +165,7 @@ def main():
     fig, ax = plt.subplots(figsize=(7, 4))
     for kind in kinds:
         ax.plot(snn[kind][1], label=kind, lw=1.3)
-    ax.set(xlabel="epoch", ylabel="training loss", title="SNN training loss per surrogate")
+    ax.set(xlabel="epoch", ylabel="training loss", title="SNN training loss per activation")
     ax.legend()
     fig.tight_layout()
     fig.savefig("experiment-three/figures/experiment_3_loss.svg", format="svg")

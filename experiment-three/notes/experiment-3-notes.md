@@ -2,7 +2,7 @@
 
 ## Question
 
-Can a spiking network be trained to solve a task a standard network can, and do different surrogate gradient functions change how well it trains?
+Can a spiking network be trained to solve a task a standard network can, and does the choice of smooth activation (called a "surrogate" in the spiking literature) change how well it trains?
 
 ## Setup
 
@@ -10,11 +10,18 @@ Can a spiking network be trained to solve a task a standard network can, and do 
 - Networks: a plain ANN (hidden 4) and a LIF spiking net (hidden 4, T=8 timesteps), each compared against the correct answer.
 - Surrogates: STE, triangle, fast-sigmoid, arctan.
 
+## Two ML terms (see glossary.md)
+
+- **Expressivity** - what the network can *represent*. Set by architecture (depth, width) + nonlinearity. Capacity, not learning.
+- **Trainability** - whether gradient descent can actually *reach* what it can represent. Set by the activation's derivative and the optimization landscape.
+
+> In one line: expressivity = what it can represent; trainability = whether we can get there.
+
 ## Mechanism
 
-The spike is a step function (0/1), so its derivative is undefined. Training uses a surrogate gradient: keep the real spike in the forward pass, but substitute a smooth function for the derivative in the backward pass. The shape of that function decides how the gradient flows.
+The spike is a step activation (0/1), so its derivative is undefined. To train with backprop we keep the real spike forward but substitute a **smooth activation** for the derivative backward, and pick which one. The shape of that derivative decides how the gradient flows.
 
-## The surrogate functions
+## The activation functions we compared
 
 | Name | Forward spike | Backward derivative (approximation) |
 |:--|:--|:--|
@@ -58,7 +65,7 @@ Worked example: a busy net fires many spikes, so its SOP count is high, e.g. arc
 
 ```mermaid
 flowchart TD
-    A[Surrogate chosen] --> B{Does its derivative have useful shape?}
+    A[Activation chosen] --> B{Does its derivative have useful shape?}
     B -- No -> STE --> C[Gradient flat: predicts 0.5, cannot learn - acc 0.5]
     B -- Yes --> D{Is it steep/well-scaled near threshold?}
     D -- Partly - triangle, fast-sigmoid --> E[Learns partway - acc 0.75]
@@ -77,7 +84,7 @@ flowchart TD
 
 ## Takeaway
 
-The surrogate gradient's shape decides whether a spiking net learns at all: arctan matches the ANN, STE cannot. And on a dense binary task the spiking net uses *more* energy, not less - the energy advantage only appears for sparse, event-driven input.
+The smooth activation's shape decides whether a spiking net learns at all: arctan matches the ANN, STE cannot. And on a dense binary task the spiking net uses *more* energy, not less - the energy advantage only appears for sparse, event-driven input.
 
 ## Implementation notes (what didn't work first)
 

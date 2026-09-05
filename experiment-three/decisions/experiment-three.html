@@ -33,7 +33,7 @@
     <p>We train two networks on the same simple task, <strong>XOR</strong> (output 1 if the two inputs differ), then compare them against the <strong>correct answer</strong>.</p>
     <ul>
       <li><strong>Plain ANN</strong> - a small standard network, trained with normal backprop. Our reference.</li>
-      <li><strong>Spiking net</strong> - the same task, but with LIF neurons and <strong>surrogate gradient</strong> training. We try 4 different surrogate functions.</li>
+      <li><strong>Spiking net</strong> - the same task, but with LIF neurons and <strong>smooth activation</strong> training. We try 4 different activation functions.</li>
     </ul>
     <p class="muted">XOR is the classic "needs a hidden layer" task, so if the spiking net learns it, the whole training pipeline works.</p>
   </div>
@@ -45,7 +45,7 @@
       <label><input type="radio" name="q1" value="not linearly separable"> The outputs are not separable by a straight line</label>
       <label><input type="radio" name="q1" value="not enough inputs"> It has too few input values</label>
 
-      <p><strong>Q2.</strong> A surrogate gradient helps training because it...</p>
+      <p><strong>Q2.</strong> A smooth activation helps training because it...</p>
       <label><input type="radio" name="q2" value="smooth derivative"> substitutes a smooth derivative for the spike's undefined one</label>
       <label><input type="radio" name="q2" value="speeds neuron"> makes the neuron fire faster</label>
 
@@ -58,9 +58,9 @@
 
   <h2>3. Decide: setup</h2>
   <div class="card">
-    <p class="muted">The surrogate functions to compare, the network size, and how long the spiking net runs per input.</p>
-    <form data-lavish-question="setup" onsubmit="event.preventDefault(); const f=new FormData(event.currentTarget); const s=f.getAll('surg'); window.lavish.queuePrompt('Setup - surrogates: '+(s.join(', ')||'none')+' | hidden: '+(f.get('hidden')||'n/a')+' | timesteps: '+(f.get('ts')||'n/a'), { tag:'setup', text:'Experiment setup', element:event.currentTarget, data:{ question:'setup' } });">
-      <p><strong>Which surrogate gradient functions to compare? (pick as many)</strong></p>
+    <p class="muted">The activation functions to compare, the network size, and how long the spiking net runs per input.</p>
+    <form data-lavish-question="setup" onsubmit="event.preventDefault(); const f=new FormData(event.currentTarget); const s=f.getAll('surg'); window.lavish.queuePrompt('Setup - activations: '+(s.join(', ')||'none')+' | hidden: '+(f.get('hidden')||'n/a')+' | timesteps: '+(f.get('ts')||'n/a'), { tag:'setup', text:'Experiment setup', element:event.currentTarget, data:{ question:'setup' } });">
+      <p><strong>Which smooth activation functions to compare? (pick as many)</strong></p>
       <label><input type="checkbox" name="surg" value="ste"> Straight-through (STE)</label>
       <label><input type="checkbox" name="surg" value="triangle"> Triangle</label>
       <label><input type="checkbox" name="surg" value="fast-sigmoid"> Fast-sigmoid (in use)</label>
